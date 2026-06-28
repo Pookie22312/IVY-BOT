@@ -13,7 +13,13 @@ async function updateRosterEmbed(client) {
         const members = db.prepare("SELECT * FROM roster ORDER BY joined_at ASC").all();
         const max = config.maxRoster;
 
-        const rankOrder = ["Owner", "Co Owner", "Officer", "Member", "Trial"];
+        const rankOrder = ["👑 Owner", "🛡 Staff", "🌿 Guild Member"];
+
+        const rankLabel = {
+            "👑 Owner": "👑 Owner",
+            "🛡 Staff": "🛡 Staff",
+            "🌿 Guild Member": "🌿 Guild Member"
+        };
 
         const sorted = members.sort((a, b) => {
             const ai = rankOrder.indexOf(a.rank);
@@ -23,9 +29,10 @@ async function updateRosterEmbed(client) {
 
         let list = "";
         for (let i = 0; i < sorted.length; i++) {
-            const member = await guild.members.fetch(sorted[i].discord_id).catch(() => null);
-            const displayName = member ? member.displayName : sorted[i].username;
-            list += `\`${i + 1}.\` <@${sorted[i].discord_id}> — **${displayName}** — *${sorted[i].rank}*\n`;
+            const guildMember = await guild.members.fetch(sorted[i].discord_id).catch(() => null);
+            const displayName = guildMember ? guildMember.displayName : sorted[i].username;
+            const rank = rankLabel[sorted[i].rank] || sorted[i].rank;
+            list += `\`${i + 1}.\` <@${sorted[i].discord_id}> — **${displayName}** — ${rank}\n`;
         }
         if (!list) list = "*No members yet.*";
 

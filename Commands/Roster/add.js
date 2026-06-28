@@ -11,28 +11,16 @@ module.exports = {
         .addUserOption(opt => opt.setName("user").setDescription("The user to add.").setRequired(true))
         .addStringOption(opt => opt.setName("rank").setDescription("Their rank.").setRequired(false)
             .addChoices(
-                { name: "Owner", value: "Owner" },
-                { name: "Co Owner", value: "Co Owner" },
-                { name: "Officer", value: "Officer" },
-                { name: "Member", value: "Member" },
-                { name: "Trial", value: "Trial" }
+                { name: "👑 Owner", value: "👑 Owner" },
+                { name: "🛡 Staff", value: "🛡 Staff" },
+                { name: "🌿 Guild Member", value: "🌿 Guild Member" }
             )),
 
     async execute(interaction, client) {
         const config = require("../../config.json");
         const user = interaction.options.getUser("user");
-        const rank = interaction.options.getString("rank") || "Member";
+        const rank = interaction.options.getString("rank") || "🌿 Guild Member";
         const member = await interaction.guild.members.fetch(user.id);
-
-        const ownerRole = interaction.guild.roles.cache.find(r => r.name === config.ownerRole);
-        const staffRole = interaction.guild.roles.cache.find(r => r.name === config.staffRole);
-        const hasPermission = (ownerRole && member.roles.cache.has(ownerRole.id)) ||
-                              (staffRole && member.roles.cache.has(staffRole.id)) ||
-                              interaction.member.permissions.has(PermissionFlagsBits.Administrator);
-
-        if (!hasPermission) {
-            return interaction.reply({ content: "❌ You don't have permission to use this command.", ephemeral: true });
-        }
 
         const existing = db.prepare("SELECT * FROM roster WHERE discord_id = ?").get(user.id);
         if (existing) {
