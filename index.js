@@ -1,5 +1,8 @@
 require("dotenv").config();
 
+const keepAlive = require("./utils/keepalive");
+keepAlive();
+
 const {
     Client,
     GatewayIntentBits,
