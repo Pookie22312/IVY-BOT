@@ -23,7 +23,9 @@ async function updateRosterEmbed(client) {
 
         let list = "";
         for (let i = 0; i < sorted.length; i++) {
-            list += `\`${i + 1}.\` ${sorted[i].username} — *${sorted[i].rank}*\n`;
+            const member = await guild.members.fetch(sorted[i].discord_id).catch(() => null);
+            const displayName = member ? member.displayName : sorted[i].username;
+            list += `\`${i + 1}.\` <@${sorted[i].discord_id}> — **${displayName}** — *${sorted[i].rank}*\n`;
         }
         if (!list) list = "*No members yet.*";
 
