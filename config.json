@@ -1,0 +1,10 @@
+{
+  "ownerRole": "👑 Owner",
+  "staffRole": "🛡 Staff",
+  "memberRole": "@everyone",
+  "ticketCategory": "Applications",
+  "rosterChannel": "📋・roster",
+  "applicationChannel": "📝・apply-here",
+  "logsChannel": "logs",
+  "maxRoster": 50
+}
